@@ -9,6 +9,7 @@
   "author": "Lucas Gonzalez",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

@@ -1,9 +1,13 @@
 const express = require('express');
 const mysql = require('mysql');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 3050;
 
 const app = express();
+
+// Habilitar CORS
+app.use(cors());
 
 app.use(express.json());
 
@@ -17,7 +21,7 @@ const connection = mysql.createConnection({
 
 // Route Expenses
 app.get('/expenses', (req, res) => {
-    const query = 'SELECT * FROM expenses';
+    const query = 'SELECT id, concepto, monto, DATE_FORMAT(fecha, "%Y-%m-%d") AS fecha, tipo FROM expenses;';
 
     connection.query(query, (error, results) => {
         if (error) throw error;
@@ -36,7 +40,7 @@ app.get('/expenses/:id', (req, res) => {
         id
     } = req.params;
 
-    const query = `SELECT * FROM expenses WHERE id = ${id}`;
+    const query = `SELECT id, concepto, monto, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, tipo FROM expenses WHERE id = ${id}`;
 
     connection.query(query, (error, result) => {
         if (error) throw error;
