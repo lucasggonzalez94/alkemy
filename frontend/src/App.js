@@ -7,21 +7,31 @@ import {
 
 import Balance from './components/Balance';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 import NewOperation from './components/NewOperation';
 import ListAllOperations from './components/ListAllOperations';
+import InitialBalance from './components/InitialBalance';
 
 function App() {
+
+	const [budget, setBudget] = useState(0);
+
 	return (
 		<Router>
 			<Switch>
 				<Route
 					exact path='/'
-					component={Balance}
+					component={(budget !== 0 ? () => <Balance budget={budget}/> : () => <InitialBalance setBudget={setBudget}/>)}
 				/>
 
 				<Route
 					exact path = '/login'
 					component = {Login}
+				/>
+
+				<Route
+					exact path = '/signup'
+					component = {SignUp}
 				/>
 
 				<Route
