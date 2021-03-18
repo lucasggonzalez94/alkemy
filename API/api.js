@@ -1,11 +1,16 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 3050;
 
 const app = express();
 
-app.use(express.json());
+// Habilitar CORS
+app.use(cors());
+
+app.use(bodyParser.json());
 
 // MySQL
 const connection = mysql.createConnection({
@@ -17,7 +22,7 @@ const connection = mysql.createConnection({
 
 // Route Expenses
 app.get('/expenses', (req, res) => {
-    const query = 'SELECT * FROM expenses';
+    const query = 'SELECT id, concepto, monto, DATE_FORMAT(fecha, "%Y-%m-%d") AS fecha, tipo FROM expenses;';
 
     connection.query(query, (error, results) => {
         if (error) throw error;
@@ -36,7 +41,22 @@ app.get('/expenses/:id', (req, res) => {
         id
     } = req.params;
 
-    const query = `SELECT * FROM expenses WHERE id = ${id}`;
+    const query = `SELECT id, concepto, monto, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, tipo FROM expenses WHERE id = ${id}`;
+
+    connection.query(query, (error, result) => {
+        if (error) throw error;
+
+        if (result.length > 0) {
+            res.json(result);
+        } else {
+            res.send('Not result');
+        }
+    });
+});
+
+app.get('/expenseslimit', (req, res) => {
+
+    const query = `SELECT id, concepto, monto, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, tipo FROM expenses ORDER BY fecha DESC LIMIT 10`;
 
     connection.query(query, (error, result) => {
         if (error) throw error;
@@ -136,10 +156,10 @@ app.post('/addusers', (req, res) => {
     const query = 'INSERT INTO users SET ?';
 
     const userObj = {
-        concepto: req.body.concepto,
-        monto: req.body.monto,
-        fecha: req.body.fecha,
-        tipo: req.body.tipo
+        email: req.body.email,
+        password: req.body.password,
+        expenseId: req.body.expenseId,
+        balance: req.body.balance
     };
 
     connection.query(query, userObj, error => {
@@ -150,13 +170,8 @@ app.post('/addusers', (req, res) => {
 });
 
 app.put('/updateusers', (req, res) => {
-    const {
-        id
-    } = req.params;
-    const {
-        email,
-        password
-    } = req.body;
+    const {id} = req.params;
+    const {email, password} = req.body;
     const query = `UPDATE users SET email = '${email}', password = '${password}' WHERE id = ${id}`;
 
     connection.query(query, error => {
@@ -167,9 +182,7 @@ app.put('/updateusers', (req, res) => {
 });
 
 app.delete('/deleteusers', (req, res) => {
-    const {
-        id
-    } = req.params;
+    const {id} = req.params;
     const query = `DELETE FROM users WHERE id = ${id}`;
 
     connection.query(query, error => {
