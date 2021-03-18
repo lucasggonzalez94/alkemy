@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 
-const ListOperations = () => {
+const ListOperations = (props) => {
 
-    const [operations, setOperations] = useState({});
+    const [operationsList, setOperationsList] = useState([]);
     const [consult, setConsult] = useState(true);
 
     useEffect(() => {
@@ -11,11 +11,9 @@ const ListOperations = () => {
         
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4 && ajax.status === 200) {
-                setOperations(JSON.parse(ajax.responseText));
+                setOperationsList(JSON.parse(ajax.responseText));
 
                 setConsult(false);
-            } else {
-                console.log('Hubo un error');
             }
         };
 
@@ -28,10 +26,10 @@ const ListOperations = () => {
         <div className="contenedor">
             <h2>Listado de Operaciones</h2>
 
-            <div className='contenedor-interno'>
+            <div className='list'>
                 {
-                    operations.length > 0 ?
-                    operations.map(operation => (
+                    operationsList.length > 0 ?
+                    operationsList.map(operation => (
                         <div key={operation.id} className='operation'>
                             <h3>$ {operation.monto}</h3>
 
@@ -47,11 +45,11 @@ const ListOperations = () => {
                             </div>
                         </div>
                     )) :
-                    <p>Ingrese operaciones para empezar a ver su balance.</p>
+                    <p>Ingrese su presupuesto inicial.</p>
                 }
 
                 <div className='buttons'>
-                    <button className='btn' disabled={(operations.length <= 0 ? true : false)}>Ver Todas</button>
+                    <button className='btn' disabled={(operationsList.length <= 0 ? true : false)}>Ver Todas</button>
                 </div>
             </div>
         </div>

@@ -9,12 +9,18 @@ import EditOperation from './components/EditOperation';
 
 function App() {
 
+	const [consult, setConsult] = useState(true);
+	const [budget, setBudget] = useState(0);
+
 	return (
 		<Router>
 			<Switch>
 				<Route
 					exact path='/'
-					component={(() => <Home/>)}
+					component={() => <Home
+							consult={consult}
+							setConsult={setConsult}
+						/>}
 				/>
 
 				<Route
@@ -29,7 +35,12 @@ function App() {
 
 				<Route
 					exact path = '/new'
-					component = {NewOperation}
+					component = {() => <NewOperation
+							consult={consult}
+							setConsult={setConsult}
+							budget={budget}
+							setBudget={setBudget}
+						/>}
 				/>
 
 				<Route
