@@ -19,7 +19,9 @@ function App() {
 					exact path='/'
 					component={() => <Home
 							consult={consult}
+							budget={budget}
 							setConsult={setConsult}
+							setBudget={setBudget}
 						/>}
 				/>
 
@@ -36,7 +38,6 @@ function App() {
 				<Route
 					exact path = '/new'
 					component = {() => <NewOperation
-							consult={consult}
 							setConsult={setConsult}
 							budget={budget}
 							setBudget={setBudget}

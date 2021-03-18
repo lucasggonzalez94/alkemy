@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
 const NewOperation = (props) => {
 
-    const {operations, consult, setConsult} = props
+    const {budget, setBudget, setConsult} = props
 
     const [newOperation, setNewOperation] = useState({
         concepto: '',
         monto: '',
         fecha: '',
-        tipo: ''
+        tipo: 'Ingreso'
     })
 
     // Obtiene datos del formulario
@@ -40,6 +40,18 @@ const NewOperation = (props) => {
         ajax.open('POST', 'http://localhost:3050/addexpenses');
         ajax.setRequestHeader('Content-Type', 'application/json');
         ajax.send(JSON.stringify(newOperation));
+
+        let remaining = 0;
+
+        if (newOperation.tipo === 'Egreso') {
+            remaining = budget - parseFloat(newOperation.monto);
+        } else {
+            remaining = budget + parseFloat(newOperation.monto);
+        }
+
+        setBudget(remaining);
+
+        props.history.push('/');
     }
 
     return (
@@ -66,4 +78,4 @@ const NewOperation = (props) => {
     );
 }
  
-export default NewOperation;
+export default withRouter(NewOperation);

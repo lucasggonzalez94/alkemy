@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
 
@@ -10,7 +9,7 @@ const app = express();
 // Habilitar CORS
 app.use(cors());
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // MySQL
 const connection = mysql.createConnection({

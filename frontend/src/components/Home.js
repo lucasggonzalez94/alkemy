@@ -5,7 +5,7 @@ import NewOperation from './NewOperation';
 
 const Home = (props) => {
 
-    const {consult, setConsult} = props
+    const {budget, consult, setConsult} = props
 
     const [operations, setOperations] = useState([]);
 
@@ -38,6 +38,7 @@ const Home = (props) => {
             <Balance
                 operations={operations}
                 consult={consult}
+                budget={budget}
                 setOperations={setOperations}
                 setConsult={setConsult}
             />
