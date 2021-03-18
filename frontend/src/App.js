@@ -5,10 +5,9 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import NewOperation from './components/NewOperation';
 import Home from './components/Home';
+import EditOperation from './components/EditOperation';
 
 function App() {
-
-	const [budget, setBudget] = useState(0);
 
 	return (
 		<Router>
@@ -26,6 +25,16 @@ function App() {
 				<Route
 					exact path = '/signup'
 					component = {SignUp}
+				/>
+
+				<Route
+					exact path = '/new'
+					component = {NewOperation}
+				/>
+
+				<Route
+					exact path = '/edit'
+					component = {EditOperation}
 				/>
 			</Switch>
 		</Router>

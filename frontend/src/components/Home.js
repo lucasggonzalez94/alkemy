@@ -11,6 +11,7 @@ const Home = () => {
     return (
         <Fragment>
             <ListOperations/>
+            <Balance/>
         </Fragment>
     );
 }

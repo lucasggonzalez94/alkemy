@@ -53,6 +53,21 @@ app.get('/expenses/:id', (req, res) => {
     });
 });
 
+app.get('/expenseslimit', (req, res) => {
+
+    const query = `SELECT id, concepto, monto, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, tipo FROM expenses LIMIT 10`;
+
+    connection.query(query, (error, result) => {
+        if (error) throw error;
+
+        if (result.length > 0) {
+            res.json(result);
+        } else {
+            res.send('Not result');
+        }
+    });
+});
+
 app.post('/addexpenses', (req, res) => {
     const query = 'INSERT INTO expenses SET ?';
 

@@ -1,5 +1,4 @@
-import React, {Fragment, useState, useEffect} from 'react';
-import {Link} from 'react-router-dom'
+import React, {useState, useEffect} from 'react';
 
 const ListOperations = () => {
 
@@ -20,40 +19,42 @@ const ListOperations = () => {
             }
         };
 
-        ajax.open('GET', 'http://localhost:3050/expenses', true);
+        ajax.open('GET', 'http://localhost:3050/expenseslimit', true);
         ajax.send();
 
     }, [consult]);
 
     return (
-        <Fragment>
         <div className="contenedor">
-            <h1>Listado de Operaciones</h1>
+            <h2>Listado de Operaciones</h2>
 
-            {operations.length > 0 ?
-                operations.map(operation => (
-                    <div className='operation'>
-                        <h3>$ {operation.monto}</h3>
+            <div className='contenedor-interno'>
+                {
+                    operations.length > 0 ?
+                    operations.map(operation => (
+                        <div key={operation.id} className='operation'>
+                            <h3>$ {operation.monto}</h3>
 
-                        <p>{operation.fecha}</p>
+                            <div className='description'>
+                                <p>{operation.fecha}</p>
 
-                        <p>{operation.concepto} - <span>{operation.tipo}</span></p>
+                                <p>{operation.concepto} - <span>{operation.tipo}</span></p>
+                            </div>
 
-                        <div className='buttons'>
-                            <button><i class="fas fa-edit"></i></button>
-                            <button><i class="fas fa-trash-alt"></i></button>
+                            <div className='actions'>
+                                <button className='btn btn-action edit'><i className="fas fa-edit"></i></button>
+                                <button className='btn btn-action delete'><i className="fas fa-trash-alt"></i></button>
+                            </div>
                         </div>
-                    </div>
-                )) :
-                null
-            }
+                    )) :
+                    <p>Ingrese operaciones para empezar a ver su balance.</p>
+                }
 
-            <div className='buttons'>
-                <button className='button button-primary'>Ver Todas</button>
-                <button className='button button-primary'>Filtrar</button>
+                <div className='buttons'>
+                    <button className='btn' disabled={(operations.length <= 0 ? true : false)}>Ver Todas</button>
+                </div>
             </div>
         </div>
-        </Fragment>
     );
 }
  
