@@ -105,6 +105,11 @@ label {
   margin: 0 auto;
 }
 
+.list p {
+  text-align: center;
+  margin: 15px;
+}
+
 .operation {
   border-bottom: 1px solid gray;
   display: flex;

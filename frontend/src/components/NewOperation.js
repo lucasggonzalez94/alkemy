@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Link, withRouter} from 'react-router-dom'
+import Swal from 'sweetalert2';
 
 const NewOperation = (props) => {
 
@@ -24,34 +25,41 @@ const NewOperation = (props) => {
     const submitOperation = e => {
         e.preventDefault()
 
-        console.log(JSON.parse(JSON.stringify(newOperation)));
-        
-        const ajax = new XMLHttpRequest();
-        
-        ajax.onreadystatechange = function() {
-            if (ajax.readyState === 4 && ajax.status === 200) {
+        if(newOperation.concepto !== '' && newOperation.monto > 0 && !isNaN(newOperation.monto) && newOperation.fecha !== '' && newOperation.tipo !== '') {
+            
+            const ajax = new XMLHttpRequest();
+            
+            ajax.onreadystatechange = function() {
+                if (ajax.readyState === 4 && ajax.status === 200) {
 
-                setConsult(true);
-            }else {
-                console.log('Hubo un error');
+                    setConsult(true);
+                }else {
+                    console.log('Hubo un error');
+                }
+            };
+
+            ajax.open('POST', 'http://localhost:3050/addexpenses');
+            ajax.setRequestHeader('Content-Type', 'application/json');
+            ajax.send(JSON.stringify(newOperation));
+
+            let remaining = 0;
+
+            if (newOperation.tipo === 'Egreso') {
+                remaining = budget - parseFloat(newOperation.monto);
+            } else {
+                remaining = budget + parseFloat(newOperation.monto);
             }
-        };
 
-        ajax.open('POST', 'http://localhost:3050/addexpenses');
-        ajax.setRequestHeader('Content-Type', 'application/json');
-        ajax.send(JSON.stringify(newOperation));
+            setBudget(remaining);
 
-        let remaining = 0;
-
-        if (newOperation.tipo === 'Egreso') {
-            remaining = budget - parseFloat(newOperation.monto);
+            props.history.push('/');
         } else {
-            remaining = budget + parseFloat(newOperation.monto);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Rellene los campos correctamente.'
+            })
         }
-
-        setBudget(remaining);
-
-        props.history.push('/');
     }
 
     return (

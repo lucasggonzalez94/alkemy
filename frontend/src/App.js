@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import Login from './components/Login';
-import SignUp from './components/SignUp';
+import Register from './components/Register';
 import NewOperation from './components/NewOperation';
 import Home from './components/Home';
 import EditOperation from './components/EditOperation';
@@ -31,8 +31,8 @@ function App() {
 				/>
 
 				<Route
-					exact path = '/signup'
-					component = {SignUp}
+					exact path = '/register'
+					component = {Register}
 				/>
 
 				<Route

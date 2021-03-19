@@ -24,7 +24,7 @@ const Home = (props) => {
         ajax.open('GET', 'http://localhost:3050/expenses', true);
         ajax.send();
 
-    }, [consult]);
+    }, [consult, budget]);
 
     return (
 

@@ -134,9 +134,7 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/users/:id', (req, res) => {
-    const {
-        id
-    } = req.params;
+    const {id} = req.params;
 
     const query = `SELECT * FROM users WHERE id = ${id}`;
 
@@ -155,10 +153,9 @@ app.post('/addusers', (req, res) => {
     const query = 'INSERT INTO users SET ?';
 
     const userObj = {
-        concepto: req.body.concepto,
-        monto: req.body.monto,
-        fecha: req.body.fecha,
-        tipo: req.body.tipo
+        email: req.body.email,
+        password: req.body.password,
+        balance: req.body.balance
     };
 
     connection.query(query, userObj, error => {
@@ -169,14 +166,9 @@ app.post('/addusers', (req, res) => {
 });
 
 app.put('/updateusers', (req, res) => {
-    const {
-        id
-    } = req.params;
-    const {
-        email,
-        password
-    } = req.body;
-    const query = `UPDATE users SET email = '${email}', password = '${password}' WHERE id = ${id}`;
+    const {id} = req.params;
+    const {email, password, balance} = req.body;
+    const query = `UPDATE users SET email = '${email}', password = '${password}', balance = ${balance} WHERE id = ${id}`;
 
     connection.query(query, error => {
         if (error) throw error;
@@ -186,9 +178,7 @@ app.put('/updateusers', (req, res) => {
 });
 
 app.delete('/deleteusers', (req, res) => {
-    const {
-        id
-    } = req.params;
+    const {id} = req.params;
     const query = `DELETE FROM users WHERE id = ${id}`;
 
     connection.query(query, error => {
