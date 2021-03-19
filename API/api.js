@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
 
@@ -10,7 +9,7 @@ const app = express();
 // Habilitar CORS
 app.use(cors());
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // MySQL
 const connection = mysql.createConnection({
@@ -56,7 +55,7 @@ app.get('/expenses/:id', (req, res) => {
 
 app.get('/expenseslimit', (req, res) => {
 
-    const query = `SELECT id, concepto, monto, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, tipo FROM expenses ORDER BY fecha DESC LIMIT 10`;
+    const query = `SELECT id, concepto, monto, DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha, tipo FROM expenses LIMIT 10`;
 
     connection.query(query, (error, result) => {
         if (error) throw error;
@@ -135,9 +134,7 @@ app.get('/users', (req, res) => {
 });
 
 app.get('/users/:id', (req, res) => {
-    const {
-        id
-    } = req.params;
+    const {id} = req.params;
 
     const query = `SELECT * FROM users WHERE id = ${id}`;
 
@@ -158,7 +155,6 @@ app.post('/addusers', (req, res) => {
     const userObj = {
         email: req.body.email,
         password: req.body.password,
-        expenseId: req.body.expenseId,
         balance: req.body.balance
     };
 
@@ -171,8 +167,8 @@ app.post('/addusers', (req, res) => {
 
 app.put('/updateusers', (req, res) => {
     const {id} = req.params;
-    const {email, password} = req.body;
-    const query = `UPDATE users SET email = '${email}', password = '${password}' WHERE id = ${id}`;
+    const {email, password, balance} = req.body;
+    const query = `UPDATE users SET email = '${email}', password = '${password}', balance = ${balance} WHERE id = ${id}`;
 
     connection.query(query, error => {
         if (error) throw error;
